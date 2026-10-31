@@ -1,0 +1,17 @@
+---
+const PHONE_LINK = "tel:+919008315606";
+---
+<header style="position:sticky;top:0;background:rgba(255,255,255,0.8);backdrop-filter:blur(12px);border-bottom:1px solid #d2d2d7;z-index:100;">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;">
+    <a href="/" style="font-weight:600;font-size:1.2rem;color:var(--text);text-decoration:none;letter-spacing:-0.02em;">
+      RO Service
+    </a>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <a href="#services" style="text-decoration:none;color:var(--text);font-size:0.9rem;font-weight:500;">Services</a>
+      <a href="#pricing" style="text-decoration:none;color:var(--text);font-size:0.9rem;font-weight:500;">Pricing</a>
+      <a href={PHONE_LINK} class="btn btn-primary" style="padding:10px 20px;font-size:0.9rem;">
+        Contact
+      </a>
+    </div>
+  </div>
+</header>

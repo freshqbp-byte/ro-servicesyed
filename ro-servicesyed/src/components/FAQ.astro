@@ -1,0 +1,32 @@
+---
+const faqs = [
+  { q: "RO service ka kitna charge hai?", a: "Basic service visit ₹299 se shuru hoti hai. Repair aur spare parts ka charge inspection ke baad batate hain. Koi hidden charge nahi hota." },
+  { q: "Kitne time mein technician aayega?", a: "Aam taur par 2 ghante ke andar. Emergency cases mein hum same-day service dete hain." },
+  { q: "Kaunse brands ki service karte hain?", a: "Kent, Aquaguard, Pureit, AO Smith, Livpure, Havells, Blue Star, Faber aur sabhi major brands ki service karte hain." },
+  { q: "Kya warranty milti hai?", a: "Haan, har repair pe 30 din ki service warranty milti hai. Spare parts pe brand ki warranty alag se milti hai." },
+  { q: "Payment kaise kar sakte hain?", a: "Cash, UPI (GPay/PhonePe/Paytm) aur Card — sabhi options available hain." },
+  { q: "AMC lena zaroori hai?", a: "Zaroori nahi, lekin AMC se saal bhar ki service free ho jaati hai aur paisa bachta hai. Long-term ke liye best hai." },
+];
+---
+<section id="faq">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <div style="max-width:760px;margin:0 auto;">
+      {faqs.map(f => (
+        <details style="border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-bottom:10px;background:#fff;">
+          <summary style="font-weight:600;cursor:pointer;">{f.q}</summary>
+          <p style="margin-top:10px;color:#4b5563;">{f.a}</p>
+        </details>
+      ))}
+    </div>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    })} />
+  </div>
+</section>

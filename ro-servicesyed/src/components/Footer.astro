@@ -1,0 +1,221 @@
+---
+const year = new Date().getFullYear();
+const { brandName = "RO Service" } = Astro.props;
+---
+
+<footer class="main-footer">
+  <div class="container">
+    
+    <!-- Brand & Description -->
+    <div class="footer-brand-section">
+      <h3 class="footer-brand">RO <span>Service Support</span></h3>
+      <p class="footer-desc">
+        Professional water purifier service center in Bangalore. We provide doorstep RO repair, installation, AMC, and maintenance for all types of water purifiers.
+      </p>
+      <span class="support-badge">● 24x7 Customer Service Support</span>
+    </div>
+
+    <!-- Contact Us -->
+    <div class="footer-section">
+      <h4>Contact Us</h4>
+      <a href="tel:+919008315606" class="contact-link">
+        <span>📞</span> +91 9008315606
+      </a>
+      <a href="mailto:info@roservicesupport.co.in" class="contact-link">
+        <span>✉️</span> info@roservicesupport.co.in
+      </a>
+    </div>
+
+    <!-- Service Area -->
+    <div class="footer-section">
+      <h4>Service Area</h4>
+      <p>Bangalore, Karnataka</p>
+      <p class="area-desc">Available 24x7 across all major areas of Bangalore and nearby localities.</p>
+    </div>
+
+    <!-- Disclaimer Box -->
+    <div class="footer-disclaimer">
+      <strong>Disclaimer:</strong> RO Service Support is an independent water purifier service provider. We are not affiliated with, authorized by, or associated with any specific water purifier brand. All brand names, trademarks, and logos mentioned on this website belong to their respective owners and are used for identification purposes only.
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p>© {year} RO Service Support. All rights reserved.</p>
+    </div>
+
+    <!-- Legal Links -->
+    <div class="footer-legal-links">
+      <a href="/about">About Us</a>
+      <span class="dot">·</span>
+      
+      <!-- 👇 BLOG LINK ADDED HERE 👇 -->
+      <a href="/blog">Blog</a>
+      <span class="dot">·</span>
+      
+      <a href="/privacy-policy">Privacy Policy</a>
+      <span class="dot">·</span>
+      <a href="/terms">Terms & Conditions</a>
+      <span class="dot">·</span>
+      <a href="/disclaimer">Disclaimer</a>
+      <span class="dot">·</span>
+      <a href="/cookie-policy">Cookie Policy</a>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  /* ===== FOOTER STYLES (Kent Blue Theme) ===== */
+  .main-footer {
+    background: #0A2B4E; /* Kent Dark Blue Background */
+    color: #cbd5e1;
+    padding: 40px 16px 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    border-top: 3px solid #f97316; /* Top Orange Border */
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Typography & Spacing */
+  .footer-brand-section {
+    margin-bottom: 30px;
+  }
+
+  .footer-brand {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-brand span {
+    color: #f97316; /* Orange highlight */
+  }
+
+  .footer-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    text-align: justify;
+  }
+
+  /* 24x7 Badge */
+  .support-badge {
+    display: inline-block;
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  /* Sections */
+  .footer-section {
+    margin-bottom: 25px;
+  }
+
+  .footer-section h4 {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .footer-section p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
+
+  .area-desc {
+    color: #94a3b8; /* Lighter text for description */
+  }
+
+  /* Contact Links */
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover {
+    color: #f97316;
+  }
+
+  /* Disclaimer Box */
+  .footer-disclaimer {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid #f97316; /* Orange left border */
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    text-align: justify;
+    margin-bottom: 25px;
+  }
+
+  .footer-disclaimer strong {
+    color: #f97316;
+  }
+
+  /* Bottom Section */
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 15px;
+  }
+
+  /* Legal Links */
+  .footer-legal-links {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 20px; /* Extra space for mobile floating button */
+  }
+
+  .footer-legal-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+  }
+
+  .footer-legal-links a:hover {
+    color: #f97316;
+  }
+
+  .dot {
+    color: #475569;
+    font-size: 1rem;
+  }
+
+  /* Desktop Adjustments */
+  @media (min-width: 768px) {
+    .main-footer {
+      padding: 50px 20px 30px;
+    }
+    .footer-brand {
+      font-size: 1.6rem;
+    }
+    .footer-legal-links {
+      padding-bottom: 0;
+    }
+  }
+</style>

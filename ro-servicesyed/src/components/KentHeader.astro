@@ -1,0 +1,409 @@
+---
+// Kent Specific Header with Interactive Menus
+const PHONE = "+91 9008315606";
+const PHONE_LINK = "tel:+919008315606";
+---
+
+<header class="kent-header">
+  <div class="header-container">
+    
+    <!-- Left Side: Water Drop Icon & Branding -->
+    <a href="/" class="brand-wrapper">
+      <div class="icon-box">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="water-drop">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <div class="v-divider"></div>
+      <div class="brand-text">
+        <span class="brand-title">RO Kent Water Purifier</span>
+        <span class="brand-subtitle">Customer Service Center</span>
+      </div>
+    </a>
+
+    <!-- Right Side: Action Icons -->
+    <div class="header-actions">
+      
+      <!-- 1. Search Icon & Popup -->
+      <div class="action-wrapper">
+        <button class="icon-btn" id="searchBtn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        
+        <!-- Search Popup (Call & Booking) -->
+        <div class="popup-menu search-popup" id="searchPopup">
+          <a href={PHONE_LINK} class="popup-btn call-btn">
+            📞 Call Now
+          </a>
+          <a href="#book-service" class="popup-btn book-btn" id="popupBookBtn">
+            📝 Book Service
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. User Icon (Scrolls to Service Area) -->
+      <button class="icon-btn" onclick="scrollToSection('trust-section')" aria-label="User Account">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </button>
+
+      <div class="v-divider-right"></div>
+
+      <!-- 3. Cart Icon (Scrolls to Service Area) -->
+      <button class="icon-btn cart-wrapper" onclick="scrollToSection('trust-section')" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge">0</span>
+      </button>
+
+      <div class="v-divider-right"></div>
+
+      <!-- 4. Hamburger Menu & Dropdown -->
+      <div class="action-wrapper">
+        <button class="icon-btn" id="menuBtn" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu (Services, Contact, etc.) -->
+        <div class="popup-menu nav-popup" id="navMenu">
+          <a href="#services-section" class="nav-link" onclick="closeMenus()">🔧 Our Services</a>
+          <a href="#trust-section" class="nav-link" onclick="closeMenus()">📍 Service Area</a>
+          <a href={PHONE_LINK} class="nav-link">📞 Contact Us</a>
+          <a href="#book-service" class="nav-link highlight-link" onclick="closeMenus()">📝 Book Service</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<script>
+  // Scroll to section function
+  window.scrollToSection = function(id) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Menu Toggles
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchBtn = document.getElementById('searchBtn');
+    const searchPopup = document.getElementById('searchPopup');
+    const menuBtn = document.getElementById('menuBtn');
+    const navMenu = document.getElementById('navMenu');
+    const popupBookBtn = document.getElementById('popupBookBtn');
+
+    // Toggle Search Popup
+    searchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      searchPopup.classList.toggle('active');
+      navMenu.classList.remove('active');
+    });
+
+    // Toggle Nav Menu
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navMenu.classList.toggle('active');
+      searchPopup.classList.remove('active');
+    });
+
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchBtn.contains(e.target) && !searchPopup.contains(e.target)) {
+        searchPopup.classList.remove('active');
+      }
+      if (!menuBtn.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.remove('active');
+      }
+    });
+
+    // Book Service button in search popup
+    if(popupBookBtn) {
+      popupBookBtn.addEventListener('click', () => {
+        searchPopup.classList.remove('active');
+      });
+    }
+  });
+</script>
+
+<style>
+  /* ===== KENT HEADER STYLES ===== */
+  .kent-header {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    width: 100%;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .header-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* --- LEFT SIDE: ICON & TEXT --- */
+  .brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .icon-box {
+    color: #0b5ed7;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    border-radius: 50%;
+    padding: 6px;
+    flex-shrink: 0;
+  }
+
+  .water-drop { width: 100%; height: 100%; }
+
+  .v-divider {
+    width: 2px;
+    height: 28px;
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .brand-subtitle {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* --- RIGHT SIDE: ICONS --- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0f172a;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    transition: color 0.2s;
+  }
+
+  .icon-btn:hover {
+    color: #0b5ed7;
+  }
+
+  .v-divider-right {
+    width: 1.5px;
+    height: 20px;
+    background: #cbd5e1;
+  }
+
+  .cart-wrapper { position: relative; }
+
+  .cart-badge {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -2px;
+    right: -4px;
+  }
+
+  /* ===== POPUPS & DROPDOWNS ===== */
+  .action-wrapper {
+    position: relative;
+  }
+
+  .popup-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 200px;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    border: 1px solid #e2e8f0;
+  }
+
+  .popup-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Search Popup Styles */
+  .search-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    right: -20px; /* Adjust position */
+  }
+
+  .popup-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: 0.2s;
+  }
+
+  .call-btn {
+    background: #f97316;
+    color: white;
+  }
+  .call-btn:hover { background: #ea580c; }
+
+  .book-btn {
+    background: #0b5ed7;
+    color: white;
+  }
+  .book-btn:hover { background: #084298; }
+
+  /* Nav Menu Dropdown Styles */
+  .nav-popup {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+  }
+
+  .nav-link {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-link:hover {
+    background: #f8fafc;
+    color: #0b5ed7;
+  }
+
+  .highlight-link {
+    background: #eff6ff;
+    color: #0b5ed7;
+    margin: 5px 10px;
+    border-radius: 6px;
+  }
+
+  /* ===== MOBILE RESPONSIVENESS ===== */
+  @media (max-width: 600px) {
+    .header-container {
+      padding: 8px 10px;
+    }
+    
+    .brand-wrapper {
+      gap: 8px;
+    }
+
+    .icon-box {
+      width: 28px;
+      height: 28px;
+      padding: 5px;
+    }
+
+    .v-divider {
+      height: 24px;
+    }
+
+    .brand-title {
+      font-size: 0.8rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.55rem;
+    }
+
+    .header-actions {
+      gap: 4px;
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cart-badge {
+      width: 18px;
+      height: 18px;
+      font-size: 0.65rem;
+    }
+    
+    .v-divider-right {
+      height: 16px;
+    }
+
+    /* Adjust popups for mobile */
+    .search-popup {
+      right: -60px; /* Center it more */
+    }
+  }
+</style>

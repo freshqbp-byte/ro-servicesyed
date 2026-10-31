@@ -1,0 +1,172 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const PHONE = "+91 9008315606";
+const PHONE_LINK = "tel:+919008315606";
+const BUSINESS_NAME = "RO Service Support";
+
+const faqs = [
+  { q: "What services does your water purifier service center provide?", a: "Our water purifier service center provides complete RO repair, new installation, annual maintenance (AMC), filter and membrane replacement, deep cleaning, and commercial RO service." },
+  { q: "How do I find a water purifier service center near me?", a: "Simply fill out the service request form on this page or call us at +91 9008315606. Our customer support team will assign a certified technician near your location within 60 minutes." },
+  { q: "Do you provide doorstep service?", a: "Yes, we provide 100% doorstep service. Our certified technicians arrive at your home, diagnose the issue, and complete the repair on the spot." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": BUSINESS_NAME,
+  "image": "https://roservicesupport.co.in/logo.png",
+  "url": "https://roservicesupport.co.in/",
+  "telephone": PHONE,
+  "email": "info@roservicesupport.co.in",
+  "priceRange": "₹299 - ₹2,499",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bangalore",
+    "addressRegion": "Karnataka",
+    "addressCountry": "IN"
+  },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "50000" }
+};
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b5ed7" />
+    
+    <!-- SEO Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://roservicesupport.co.in/" />
+    
+    <!-- Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+    <!-- Base Styles (Global) -->
+    <style is:global>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        html, body { width: 100%; overflow-x: hidden; }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #222; line-height: 1.5; background: #f4f7fb; }
+        
+        /* Container for all pages */
+        .container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 16px; }
+    </style>
+
+    <!-- Google Tag Manager (Lazy Loaded for Speed) -->
+    <script is:inline>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.src = "https://www.googletagmanager.com/gtag/js?id=AW-16577170929";
+          script.async = true;
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-16577170929');
+        }, 2000); // 2 seconds delay to ensure page loads first
+      });
+    </script>
+</head>
+<body>
+    <!-- Main Content Slot -->
+    <slot />
+
+    <!-- Global Device Tracking Script (Fake clicks blocking) -->
+    <script is:inline>
+        (function() {
+            var MY_FINGERPRINTS = ['fp_i70rcm', 'fp_etkxam', 'fp_tovynh', 'fp_eewy8k', 'fp_epmihv', 'fp_4b117r', 'fp_m26yps', 'fp_t55341', 'fp_l8xc10', 'fp_lybcwx', 'fp_ly01lt'];
+            function getFingerprint() {
+                try {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    ctx.textBaseline = 'top'; ctx.font = '14px Arial';
+                    ctx.fillText('RO Service', 2, 2);
+                    var canvasData = canvas.toDataURL();
+                    var gl = document.createElement('canvas').getContext('webgl');
+                    var webglInfo = '';
+                    if (gl) {
+                        var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+                        if (dbg) webglInfo = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '';
+                    }
+                    var fpData = [navigator.userAgent, navigator.language, screen.width + 'x' + screen.height, screen.colorDepth, new Date().getTimezoneOffset(), navigator.hardwareConcurrency || 0, canvasData, webglInfo].join('|');
+                    var hash = 0;
+                    for (var i = 0; i < fpData.length; i++) {
+                        hash = ((hash << 5) - hash) + fpData.charCodeAt(i);
+                        hash = hash & hash;
+                    }
+                    return 'fp_' + Math.abs(hash).toString(36);
+                } catch(e) {
+                    return 'fp_' + Math.random().toString(36).substring(2, 12);
+                }
+            }
+            var fp = getFingerprint();
+            document.cookie = 'fp=' + fp + '; max-age=' + (30 * 24 * 60 * 60) + '; path=/';
+
+            if (MY_FINGERPRINTS.indexOf(fp) !== -1) return;
+
+            var params = new URLSearchParams(window.location.search);
+            var gclid = params.get('gclid') || params.get('gbraid') || params.get('wbraid');
+            if (!gclid) return;
+
+            var key = 'wm_clicks_' + fp;
+            var clicks = parseInt(localStorage.getItem(key) || '0') + 1;
+            localStorage.setItem(key, clicks);
+
+            fetch('/api/track-device', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fp: fp, clicks: clicks, gclid: gclid, url: window.location.href, ua: navigator.userAgent })
+            }).catch(function() {});
+
+            if (clicks >= 3) {
+                localStorage.setItem('wm_blocked_' + fp, 'true');
+                setTimeout(function() {
+                    document.documentElement.innerHTML = 
+                        '<body style="font-family:sans-serif;text-align:center;padding:100px 20px;background:#f4f7fb;">' +
+                        '<h1 style="color:#0A2B4E;font-size:1.8rem;font-weight:800;">Access Restricted</h1>' +
+                        '<p style="color:#555;margin-top:16px;font-size:1rem;">Your access has been blocked due to unusual activity.</p>' +
+                        '</body>';
+                }, 500);
+            }
+        })();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const isBlocked = function() {
+                var fpMatch = document.cookie.match(/fp=([^;]+)/);
+                var fp = fpMatch ? fpMatch[1] : null;
+                if (!fp) return false;
+                return localStorage.getItem('wm_blocked_' + fp) === 'true';
+            };
+            document.querySelectorAll('a[href^="tel:"]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (isBlocked()) { e.preventDefault(); alert('Access Restricted'); return false; }
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'conversion', { 'send_to': 'AW-16577170929/4Py1CIfWm5wdEPGbzuA9' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

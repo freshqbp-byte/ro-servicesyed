@@ -1,0 +1,26 @@
+---
+const plans = [
+  { name: "Basic Service", price: "₹299", items: ["Technician visit", "Full checkup", "Basic cleaning", "Repair estimate"], cta: "Book Now" },
+  { name: "Filter Change", price: "₹499+", items: ["Genuine filter", "Installation included", "30-day warranty", "Free checkup"], cta: "Book Now", featured: true },
+  { name: "AMC Plan", price: "₹2,499+", items: ["4 free services", "Unlimited repairs", "Filter discount", "Priority support"], cta: "Enquire Now" },
+];
+---
+<section id="pricing" style="background:#fff;">
+  <div class="container">
+    <h2>Simple, transparent pricing.</h2>
+    <div class="grid-3">
+      {plans.map(p => (
+        <div class="card" style={p.featured ? "border:2px solid var(--accent);box-shadow:0 8px 32px rgba(0,113,227,0.1);" : ""}>
+          <h3>{p.name}</h3>
+          <div style="font-size:2.5rem;font-weight:600;color:var(--text);margin:12px 0;">{p.price}</div>
+          <ul style="list-style:none;margin:24px 0;text-align:left;">
+            {p.items.map(i => (
+              <li style="padding:8px 0;color:var(--gray);font-size:0.95rem;">✓ {i}</li>
+            ))}
+          </ul>
+          <a href="#contact" class="btn btn-primary" style="width:100%;">{p.cta}</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,264 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BrandHeader from '../components/BrandHeader.astro'; 
+---
+
+<Layout title="Thank You | RO Service Support" description="Your service request has been submitted successfully.">
+  
+  <!-- Header (Default Aquaguard, par JS isko change kar dega) -->
+  <BrandHeader brandName="Aquaguard" brandColor="#0072CE" />
+
+  <section class="thank-you-section">
+    <div class="thank-you-card">
+      
+      <div class="check-icon">✓</div>
+
+      <h1>Form Submitted Successfully!</h1>
+      <p class="sub-text">Thank you for reaching out to us. We'll review your submission and get back to you soon.</p>
+
+      <!-- Booking ID Box -->
+      <div class="booking-box">
+        <p>YOUR BOOKING ID</p>
+        <h2 id="displayId">------</h2>
+      </div>
+
+      <!-- What's Next Box -->
+      <div class="whats-next-box">
+        <h3>What's Next?</h3>
+        <p>A certified technician will be assigned to your request. You will receive a call from our support team within 60 minutes.</p>
+      </div>
+
+      <p class="urgent-text">For urgent assistance, please call us directly.</p>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a href="tel:+919008315606" class="btn-call-now">
+          📞 Call Now
+        </a>
+        <a href="/" id="homeBtn" class="btn-home">
+          ← Home
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Dynamic Script for Header & Button -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Display Booking ID
+      const id = sessionStorage.getItem('lastBookingId');
+      if(id) {
+        document.getElementById('displayId').innerText = id;
+      } else {
+        document.getElementById('displayId').innerText = "N/A";
+      }
+
+      // 2. Get Brand from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const brand = urlParams.get('brand');
+      
+      const homeBtn = document.getElementById('homeBtn');
+      const brandTitleEl = document.querySelector('.brand-title'); // Header text
+      const iconBoxEl = document.querySelector('.icon-box'); // Header icon color
+
+      // Default Values
+      let brandName = "Aquaguard";
+      let brandColor = "#0072CE";
+      let link = "/aquaguard-service";
+
+      // 👇 Sabhi Brands ka Logic yahan add kar diya hai 👇
+      if (brand === 'Kent') {
+        brandName = "Kent"; brandColor = "#0b5ed7"; link = "/kent-service";
+      } else if (brand === 'Aquaguard') {
+        brandName = "Aquaguard"; brandColor = "#0072CE"; link = "/aquaguard-service";
+      } else if (brand === 'AO Smith') {
+        brandName = "AO Smith"; brandColor = "#006838"; link = "/ao-smith-service";
+      } else if (brand === 'Pureit') {
+        brandName = "Pureit"; brandColor = "#002855"; link = "/pureit-service";
+      } else if (brand === 'Livpure') {
+        brandName = "Livpure"; brandColor = "#00874e"; link = "/livpure-service";
+      } else if (brand === 'Havells') {
+        brandName = "Havells"; brandColor = "#003b71"; link = "/havells-service";
+      } else if (brand === 'Blue Star') {
+        brandName = "Blue Star"; brandColor = "#00529b"; link = "/blue-star-service";
+      } else if (brand === 'Faber') {
+        brandName = "Faber"; brandColor = "#d92323"; link = "/faber-service";
+      } else if (brand === 'Nasaka') {
+        brandName = "Nasaka"; brandColor = "#009fdf"; link = "/nasaka-service";
+      } else if (brand === 'Hindware') {
+        brandName = "Hindware"; brandColor = "#e31837"; link = "/hindware-service";
+      }
+
+      // Update Header Text & Color dynamically
+      if (brandTitleEl) {
+        brandTitleEl.innerText = `RO ${brandName} Water Purifier`;
+        brandTitleEl.style.color = brandColor;
+      }
+      if (iconBoxEl) {
+        iconBoxEl.style.color = brandColor;
+        iconBoxEl.style.backgroundColor = `${brandColor}15`;
+      }
+
+      // Update Button Text & Link dynamically
+      if (brand) {
+        homeBtn.innerText = `← ${brandName} Home`;
+        homeBtn.href = link;
+      } else {
+        homeBtn.innerText = "← Home";
+        homeBtn.href = "/";
+      }
+    });
+  </script>
+
+</Layout>
+
+<style>
+  .thank-you-section {
+    padding: 60px 20px;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .thank-you-card {
+    background: white;
+    max-width: 550px;
+    width: 100%;
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+
+  .check-icon {
+    width: 80px;
+    height: 80px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 20px;
+  }
+
+  h1 {
+    color: #1e293b;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+
+  .sub-text {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+
+  .booking-box {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px dashed #cbd5e1;
+  }
+
+  .booking-box p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .booking-box h2 {
+    margin: 5px 0 0 0;
+    color: #0072CE; /* Default blue */
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+  .whats-next-box {
+    background: #f8fafc;
+    border-left: 4px solid #f97316;
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+    margin-bottom: 30px;
+  }
+
+  .whats-next-box h3 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .whats-next-box p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .urgent-text {
+    color: #475569;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .btn-call-now {
+    background: #f97316;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+  }
+
+  .btn-call-now:hover { background: #ea580c; }
+
+  .btn-home {
+    background: white;
+    color: #1e293b;
+    border: 2px solid #1e293b;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
+  }
+
+  .btn-home:hover { background: #f1f5f9; }
+
+  @media (min-width: 500px) {
+    .action-buttons { flex-direction: row; }
+    .btn-call-now, .btn-home { flex: 1; }
+  }
+</style>

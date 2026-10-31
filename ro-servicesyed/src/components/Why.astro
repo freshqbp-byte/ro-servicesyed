@@ -1,0 +1,24 @@
+---
+const points = [
+  { t: "2-Hour Response", d: "We reach your doorstep within 2 hours." },
+  { t: "30-Day Warranty", d: "Every repair comes with a 30-day service warranty." },
+  { t: "Genuine Parts", d: "We only use 100% original filters and membranes." },
+  { t: "Transparent Pricing", d: "No hidden charges. Starts at just ₹299." },
+  { t: "Certified Experts", d: "Trained and background-verified technicians." },
+  { t: "Easy Payments", d: "Pay via UPI, Cash, or Card. Your choice." },
+];
+---
+<section>
+  <div class="container">
+    <h2>Why choose us?</h2>
+    <div class="grid-3">
+      {points.map(p => (
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.5rem;margin-bottom:12px;">✓</div>
+          <h3>{p.t}</h3>
+          <p style="color:var(--gray);font-size:0.95rem;">{p.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,457 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BrandHeader from '../components/BrandHeader.astro'; 
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Bangalore's #1 Trusted RO Service Center | Water Purifier Repair" 
+  description="Looking for Water purifier repair service near you? Get 100% genuine water purifier service, installation & AMC at your doorstep. Call +91 9008315606. 90 Days Warranty!"
+>
+  
+  <BrandHeader brandName="Expert" brandColor="#0b5ed7" />
+
+  <!-- 1. HERO SECTION (Clear Image & Form) -->
+  <section class="hero-section">
+    
+    <img 
+      src="/hero-bg.webp" 
+      alt="RO Water Purifier Service" 
+      class="hero-img" 
+      fetchpriority="high" 
+      loading="eager" 
+      decoding="sync" 
+      width="1200" 
+      height="800"
+    />
+    
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title-main">Bangalore's #1 Trusted RO Service Center</h1>
+        
+        <p class="hero-subtext">
+          Get the most trusted RO Water Purifier Service at your doorstep. <strong>Trusted by 50,000+ families!</strong>
+        </p>
+        <p class="hero-subtext" style="margin-bottom: 15px;">
+          Avoid local repairs and fake parts. Get <strong>official-grade RO Service</strong> with 25+ years of experience. 100% genuine parts & <strong>90-Day Warranty</strong>. Book now!
+        </p>
+
+        <div class="official-buttons">
+          <a href="#book-service" class="btn-amc">Get AMC</a>
+          <a href="#book-service" class="btn-express">Book Same-Day Service</a>
+        </div>
+
+        <div class="brand-badge-wrapper">
+          <div class="brand-top">RO SERVICE</div>
+          <div class="brand-middle">EXPERTS</div>
+          <div class="brand-bottom">SINCE 1999</div>
+        </div>
+      </div>
+
+      <!-- FORM (Strict Validation) -->
+      <div class="hero-form" id="book-service">
+        <h2 style="color: #0b5ed7;">Register Service Request</h2>
+        <p class="form-subtext">Get a call within 10 minutes.</p>
+        
+        <form id="serviceForm">
+          <input type="hidden" name="access_key" value="375172bb-62e1-4906-b4c6-25b704ea4100">
+          <input type="hidden" name="Booking_ID" id="bookingIdField" value="">
+          <input type="hidden" name="Brand" value="General">
+          
+          <div class="form-group"><input type="text" name="name" placeholder="Your Name" required /></div>
+          <div class="form-group"><input type="tel" name="mobile" placeholder="Mobile Number (10 Digits)" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required /></div>
+          <div class="form-group"><input type="text" name="pincode" placeholder="Pin Code (6 Digits)" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required /></div>
+          <div class="form-group"><textarea name="address" placeholder="Full Address (House No, Area)" rows="2" required></textarea></div>
+          <div class="form-group"><textarea name="message" placeholder="Brand & Issue (Optional)" rows="2"></textarea></div>
+          
+          <button type="submit" id="submitBtn" class="btn-submit" style="background: #0b5ed7;">Submit Request</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 2. TRUST SECTION                           -->
+  <!-- ========================================== -->
+  <section class="trust-section" id="trust-section">
+    <div class="trust-box green-box" style="background: #0b5ed7;">
+      <h2>How Can We Help You?</h2>
+      <p>Please Call Us for Instant Doorstep RO Service</p>
+      <a href="tel:+919008315606" class="trust-phone">📞 +91 9008315606</a>
+      <a href="#book-service" class="btn-white" style="color: #0b5ed7;">CONTACT US</a>
+    </div>
+    
+    <div class="trust-box white-box">
+      <div class="stat"><span class="star">⭐</span> <strong>4.9</strong><p>based on 1500+ Ratings</p></div>
+      <div class="stat"><strong>65,126</strong><p>Bookings done in last 1 year</p></div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 3. KEYWORD SECTION                         -->
+  <!-- ========================================== -->
+  <section class="services-section" id="services-section">
+    <div class="container">
+      <h2 class="section-title" style="color: #0b5ed7;">Our Water Purifier Service Center</h2>
+      <ul class="services-list">
+        <li style="border-left-color: #0b5ed7;">
+          <strong style="color: #0b5ed7;">Water Purifier Repair Service:</strong> Facing low water flow, leakage, or motor noise? We offer quick diagnosis and repair with genuine parts.
+        </li>
+        <li style="border-left-color: #0b5ed7;">
+          <strong style="color: #0b5ed7;">Water Purifier Service:</strong> Our annual maintenance plans include regular servicing, filter cleaning, and priority support.
+        </li>
+        <li style="border-left-color: #0b5ed7;">
+          <strong style="color: #0b5ed7;">Water Purifier Repair:</strong> If needed, our RO expert team can also inspect your water purifiers and make successful repairs at your doorstep.
+        </li>
+        <li style="border-left-color: #0b5ed7;">
+          <strong style="color: #0b5ed7;">Water Purifier Service Center:</strong> Place only one call, and our executives will be at your doorstep to install the machine or fix any issue.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. NEW SECTION: OUR RO SERVICE PROVIDES    -->
+  <!-- ========================================== -->
+  <section class="provides-section">
+    <div class="container">
+      <h2 class="section-title serif-font" style="color: #002855;">Our RO Service Center Provides:</h2>
+      
+      <div class="provides-card">
+        <h3 class="serif-font">RO Installation:</h3>
+        <p class="serif-font">Place only one call, and our executives will be at your doorstep to install the machine.</p>
+      </div>
+
+      <div class="provides-card">
+        <h3 class="serif-font">RO Basic Service:</h3>
+        <p class="serif-font">You can opt for basic services and regular maintenance of your water purifiers.</p>
+      </div>
+
+      <div class="provides-card">
+        <h3 class="serif-font">RO Repair:</h3>
+        <p class="serif-font">If needed, our RO expert team can also inspect your water purifiers and make successful repairs.</p>
+      </div>
+
+      <div class="provides-card">
+        <h3 class="serif-font">RO AMC:</h3>
+        <p class="serif-font">To stop worrying, you can choose our AMC plan for your RO water purifier.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. HOW WE WORK                             -->
+  <!-- ========================================== -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title" style="color: #0b5ed7;">How We Work</h2>
+      <div class="steps-container">
+        <div class="step"><div class="step-icon">📞</div><div class="step-text"><h3>Book RO Service</h3><p>Call Us or fill the enquiry form to book your service.</p></div></div>
+        <div class="step"><div class="step-icon">📝</div><div class="step-text"><h3>Get Confirmation</h3><p>Our team will confirm your Service Request with you and schedule a visit.</p></div></div>
+        <div class="step"><div class="step-icon">🧑‍🔧</div><div class="step-text"><h3>Expert will visit</h3><p>Our certified RO Service expert will reach your address at the given time.</p></div></div>
+        <div class="step"><div class="step-icon">✅</div><div class="step-text"><h3>Complete Payment</h3><p>If you are satisfied with our service, then pay with your suitable payment option.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 6. WHY CHOOSE US                           -->
+  <!-- ========================================== -->
+  <section class="why-choose-us">
+    <div class="container">
+      <h2 class="section-title" style="color: #0b5ed7;">Why Choose Our Water Purifier Service Center?</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">💳</div>
+          <h3 style="color: #0b5ed7;">Transparent Pricing</h3>
+          <p>No hidden charges. Standard visit starts at ₹299. Spare parts are informed upfront before proceeding.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3 style="color: #0b5ed7;">90 Days Warranty</h3>
+          <p>All repairs are backed by a 90-day service warranty. If the same issue returns, we fix it free.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👨‍🔧</div>
+          <h3 style="color: #0b5ed7;">Certified Technicians</h3>
+          <p>We do not send random mechanics. You get background-verified professionals who respect your home.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 7. SEO CONTENT                             -->
+  <!-- ========================================== -->
+  <section class="seo-content">
+    <div class="container">
+      <h2 class="section-title" style="color: #0b5ed7;">Best RO Service Near You</h2>
+      <p>Looking for a reliable water purifier service center near you? We offer complete doorstep support for all types of RO systems. Whether you need urgent repair, fresh installation, or regular maintenance, our certified technicians are always ready to help. We are available 24x7, every day of the week including weekends and holidays.</p>
+      <br/>
+      <p>The staff of <strong>RO Service Support</strong> is well-trained and professional to handle problems for you. Be it any company's water purifier, you can contact us through a call.</p>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 8. FAQS (8 FAQs)                           -->
+  <!-- ========================================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <h2 class="section-title" style="color: #0b5ed7;">Frequently Asked Questions</h2>
+      
+      <details class="faq-item">
+        <summary>What services does your water purifier service center provide?</summary>
+        <p>Our water purifier service center provides complete RO repair, new installation, annual maintenance (AMC), filter and membrane replacement, deep cleaning, and commercial RO service.</p>
+      </details>
+      
+      <details class="faq-item">
+        <summary>How do I find a water purifier service center near me?</summary>
+        <p>Simply fill out the service request form on this page or call us at +91 9008315606. Our customer support team will assign a certified technician near your location within 60 minutes.</p>
+      </details>
+      
+      <details class="faq-item">
+        <summary>Do you provide doorstep service?</summary>
+        <p>Yes, we provide 100% doorstep service. Our certified technicians arrive at your home, diagnose the issue, and complete the repair or installation on the spot with genuine spare parts.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How much does RO repair cost?</summary>
+        <p>Our standard service visit starts at just ₹299 and includes a full checkup. If any spare part is needed, we inform you of the price upfront and only proceed after your approval.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do you use original spare parts?</summary>
+        <p>Yes, we strictly use 100% genuine and original spare parts for all brands (Kent, Aquaguard, Pureit, etc.) to ensure the longevity of your machine and your family's health.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>How quickly can I get a water purifier repair service?</summary>
+        <p>We provide same-day doorstep service across Bangalore. Once you book via form or call, our technician will reach your home within 60 minutes.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do you offer AMC (Annual Maintenance Contract)?</summary>
+        <p>Yes, we offer highly affordable RO AMC plans. This covers your regular servicing, filter replacements, and priority support for a whole year. It saves you money and gives you peace of mind.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is there any warranty on the repair?</summary>
+        <p>Absolutely. Every repair we perform comes with a 90-day service warranty. If the same issue reoccurs within this period, we will fix it free of charge.</p>
+      </details>
+    </div>
+  </section>
+
+  <Footer brandName="RO" brandColor="#0b5ed7" />
+
+  <a href="tel:+919008315606" class="floating-call-btn" style="background: #0b5ed7; box-shadow: 0 6px 20px rgba(11, 94, 215, 0.5);">
+    <span>📞</span> Call Now
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function generateBookingId() { return "GEN-" + Math.floor(100000 + Math.random() * 900000).toString(); }
+      const bookingId = generateBookingId();
+      document.getElementById('bookingIdField').value = bookingId;
+      try { sessionStorage.setItem('lastBookingId', bookingId); } catch(e) {}
+
+      const form = document.getElementById('serviceForm');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const originalText = submitBtn.innerText;
+          submitBtn.innerText = "Submitting...";
+          submitBtn.disabled = true;
+
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form)))
+          })
+          .then(async (response) => {
+            if (response.status == 200) { window.location.href = "/thank-you?brand=General"; } 
+            else { alert("Error! Please try again."); submitBtn.innerText = originalText; submitBtn.disabled = false; }
+          })
+          .catch(() => { alert("Something went wrong!"); submitBtn.innerText = originalText; submitBtn.disabled = false; });
+        });
+      }
+    });
+  </script>
+</Layout>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3, p, a, span, input, textarea, button { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .serif-font { font-family: Georgia, 'Times New Roman', Times, serif !important; }
+  
+  /* ===== 1. HERO SECTION ===== */
+  .hero-section { 
+    position: relative; 
+    padding: 15px 15px 50px; 
+    color: #fff; 
+    display: flex; 
+    justify-content: center; 
+    overflow: hidden;
+  }
+  
+  .hero-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.35); 
+    z-index: 2;
+  }
+  
+  .hero-content { position: relative; z-index: 3; display: flex; flex-direction: column; gap: 15px; max-width: 1000px; width: 100%; }
+  .hero-text { text-align: center; }
+  
+  .hero-title-main { 
+    color: #ffffff; 
+    font-size: 2rem; 
+    font-weight: 800; 
+    margin-bottom: 12px; 
+    line-height: 1.2; 
+    text-shadow: 0 3px 6px rgba(0,0,0,0.9); 
+  }
+  
+  .hero-subtext { 
+    color: #ffffff; 
+    font-size: 1.05rem; 
+    line-height: 1.5; 
+    margin-bottom: 8px; 
+    text-shadow: 0 2px 5px rgba(0,0,0,0.9); 
+  }
+  
+  .hero-subtext strong { 
+    color: #ffffff; 
+    font-weight: 800; 
+    text-shadow: 0 2px 5px rgba(0,0,0,0.9); 
+  } 
+
+  .official-buttons { display: flex; flex-direction: column; gap: 10px; max-width: 280px; margin: 0 auto 15px; }
+  .btn-amc { background: rgba(0, 0, 0, 0.5); border: 1px solid #00AEEF; color: white; padding: 12px 15px; border-radius: 8px; font-size: 1rem; font-weight: 800; text-decoration: none; display: block; text-align: center; }
+  .btn-express { background: #ffffff; color: #0b5ed7; padding: 12px 15px; border-radius: 8px; font-size: 1rem; font-weight: 800; text-decoration: none; display: block; text-align: center; }
+
+  .brand-badge-wrapper { display: inline-flex; flex-direction: column; align-items: center; width: 160px; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); background: #fff; margin-bottom: 5px; }
+  .brand-top { background-color: #0b5ed7; color: #ffffff; font-weight: 900; font-size: 1rem; width: 100%; text-align: center; padding: 6px 0; }
+  .brand-middle { background-color: #ffffff; color: #0b5ed7; font-size: 0.85rem; font-weight: 800; width: 100%; text-align: center; padding: 4px 0; }
+  .brand-bottom { background-color: #0b5ed7; color: #fbbf24; font-size: 0.65rem; font-weight: 800; width: 100%; text-align: center; padding: 5px 0; }
+
+  .hero-form { background: #fff; padding: 20px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .hero-form form { width: 100%; }
+  .hero-form h2 { text-align: center; margin-bottom: 5px; font-size: 1.3rem; font-weight: 800; }
+  .form-subtext { text-align: center; color: #059669; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; display: inline-block; width: 100%; }
+  
+  .form-group { margin-bottom: 10px; }
+  .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; outline: none; background: #f8fafc; }
+  .form-group input:focus, .form-group textarea:focus { border-color: #0b5ed7; background: #fff; }
+  .btn-submit { width: 100%; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+
+  /* ===== 2. TRUST SECTION ===== */
+  .trust-section { display: flex; flex-direction: column; gap: 15px; max-width: 900px; margin: -20px auto 40px; padding: 0 15px; position: relative; z-index: 4; }
+  .trust-box { border-radius: 12px; padding: 25px 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+  .green-box { color: white; }
+  .green-box h2 { font-size: 1.5rem; margin-bottom: 8px; font-weight: 800; }
+  .green-box p { font-size: 0.95rem; margin-bottom: 15px; }
+  .trust-phone { display: block; font-size: 1.8rem; font-weight: 800; color: white; text-decoration: none; margin-bottom: 20px; }
+  .btn-white { background: white; padding: 12px 30px; border-radius: 25px; font-weight: bold; text-decoration: none; display: inline-block; }
+  .white-box { background: white; display: flex; flex-direction: column; gap: 20px; }
+  .stat { text-align: center; }
+  .stat strong { font-size: 1.8rem; color: #334155; display: block; font-weight: 800; }
+  .stat p { color: #64748b; font-size: 0.9rem; margin-top: 5px; }
+  .star { font-size: 1.5rem; vertical-align: middle; }
+
+  /* ===== 3. KEYWORD SERVICES SECTION ===== */
+  .services-section { padding: 50px 15px; background: #f8fafc; }
+  .services-list { list-style: none; max-width: 800px; margin: 0 auto; }
+  .services-list li { background: white; padding: 20px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid; box-shadow: 0 2px 8px rgba(0,0,0,0.04); color: #334155; line-height: 1.6; font-size: 0.95rem; }
+  .services-list strong { font-size: 1.05rem; display: block; margin-bottom: 5px; }
+
+  /* ===== 4. NEW SECTION: PROVIDES (Serif Style) ===== */
+  .provides-section { padding: 50px 15px; background: #ffffff; }
+  .provides-card {
+    background: #ffffff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #0b5ed7; /* Match theme */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .provides-card h3 {
+    color: #002855;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .provides-card p {
+    color: #475569;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ===== 5. HOW IT WORKS ===== */
+  .how-it-works { padding: 50px 15px; background: #f8fafc; }
+  .steps-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; }
+  .step { display: flex; gap: 15px; align-items: flex-start; }
+  .step-icon { font-size: 1.5rem; background: #e2e8f0; padding: 12px; border-radius: 50%; line-height: 1; flex-shrink: 0; }
+  .step-text h3 { color: #1e293b; margin-bottom: 5px; font-size: 1.1rem; }
+  .step-text p { color: #64748b; line-height: 1.5; font-size: 0.95rem; }
+
+  /* ===== 6. WHY CHOOSE US ===== */
+  .why-choose-us { padding: 50px 15px; background: white; }
+  .cards-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 1000px; margin: 0 auto; }
+  .card { background: #f8fafc; padding: 25px 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .card-icon { font-size: 2.5rem; margin-bottom: 15px; }
+  .card h3 { margin-bottom: 10px; font-size: 1.2rem; font-weight: 800; }
+  .card p { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+
+  /* ===== 7. SEO CONTENT ===== */
+  .seo-content { padding: 50px 15px; background: #f8fafc; }
+  .seo-content p { color: #475569; line-height: 1.7; font-size: 1rem; max-width: 800px; margin: 0 auto; text-align: justify; }
+
+  /* ===== 8. FAQS ===== */
+  .faq-section { padding: 50px 15px; background: white; }
+  .faq-item { background: #f8fafc; margin-bottom: 15px; border-radius: 10px; border: 1px solid #e2e8f0; max-width: 800px; margin-left: auto; margin-right: auto; overflow: hidden; }
+  .faq-item summary { padding: 20px; font-weight: 700; color: #1e293b; cursor: pointer; list-style: none; position: relative; font-size: 1.05rem; display: flex; align-items: center; justify-content: space-between; outline: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; color: #0b5ed7; font-size: 1.6rem; font-weight: 400; line-height: 1; transition: transform 0.3s; }
+  .faq-item[open] summary::after { content: "−"; transform: rotate(180deg); }
+  .faq-item p { padding: 0 20px 20px; color: #475569; line-height: 1.7; font-size: 0.95rem; margin: 0; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+
+  /* ===== 9. FLOATING BUTTON ===== */
+  .floating-call-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); color: white; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 1rem; text-decoration: none; z-index: 9999; display: flex; align-items: center; justify-content: center; gap: 8px; width: 80%; max-width: 300px; }
+
+  .section-title { color: #0b5ed7; font-size: 1.5rem; margin-bottom: 25px; text-align: center; font-weight: 800; line-height: 1.3; }
+
+  /* ===== DESKTOP MEDIA QUERY ===== */
+  @media (min-width: 768px) {
+    .hero-section { padding: 30px 20px 50px; }
+    .hero-content { flex-direction: row; align-items: flex-start; justify-content: space-between; gap: 30px; }
+    .hero-text { text-align: left; flex: 1; padding-right: 20px; padding-top: 10px; }
+    .hero-title-main { font-size: 2.6rem; margin-bottom: 15px; }
+    .hero-subtext { font-size: 1.15rem; margin-bottom: 15px; }
+    .official-buttons { margin: 0 0 20px 0; flex-direction: row; max-width: 100%; }
+    .hero-form { max-width: 400px; margin-bottom: 0; margin-top: 0; }
+    .section-title { font-size: 1.8rem; }
+    .trust-section { flex-direction: row; gap: 20px; margin-top: -30px; }
+    .green-box, .white-box { flex: 1; }
+    .white-box { flex-direction: row; justify-content: space-around; align-items: center; }
+    .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .floating-call-btn { left: auto; right: 30px; transform: none; width: auto; }
+  }
+</style>

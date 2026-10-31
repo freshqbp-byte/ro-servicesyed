@@ -1,0 +1,24 @@
+---
+const services = [
+  { icon: "🔧", title: "RO Repair", desc: "Fast and reliable repair for any water purifier issue." },
+  { icon: "🚿", title: "New Installation", desc: "Same-day installation with full demo and setup." },
+  { icon: "📅", title: "AMC Plans", desc: "Yearly maintenance plans for complete peace of mind." },
+  { icon: "💧", title: "Filter Change", desc: "100% genuine filters, membranes, and cartridges." },
+  { icon: "🧼", title: "Deep Cleaning", desc: "Internal cleaning to keep your water fresh and safe." },
+  { icon: "🏢", title: "Commercial RO", desc: "Service for offices, hotels, and restaurants." },
+];
+---
+<section id="services" style="background:#fff;">
+  <div class="container">
+    <h2>Everything you need.</h2>
+    <div class="grid-3">
+      {services.map(s => (
+        <div class="card" style="text-align:center;border:1px solid #f0f0f0;box-shadow:none;">
+          <div style="font-size:2.5rem;margin-bottom:16px;">{s.icon}</div>
+          <h3>{s.title}</h3>
+          <p style="color:var(--gray);font-size:0.95rem;">{s.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
