@@ -7,9 +7,15 @@ export default defineConfig({
   adapter: vercel(),
   compressHTML: true,
   build: { 
-    inlineStylesheets: 'always' // 👈 CSS ko inline kar diya (Render-blocking fix)
+    inlineStylesheets: 'always' 
   },
   devToolbar: { 
     enabled: false 
+  },
+  // 👇 YE NAYA SECTION ADD KAREIN (Isse google-ads-api ka error hat jayega) 👇
+  vite: {
+    ssr: {
+      noExternal: ['google-ads-api']
+    }
   }
 });
