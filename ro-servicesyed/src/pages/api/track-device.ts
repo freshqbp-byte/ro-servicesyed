@@ -3,7 +3,6 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { GoogleAdsApi } from 'google-ads-api';
 
-// 👇 YAHAN APNI GOOGLE SHEET KA URL DAALEIN
 const WEBHOOK = 'https://script.google.com/macros/s/AKfycbyFBUjNWku0RbHD28ySUnd6A5GY7Rspmo4Dez_kF67MjxYd3gR0d2uLR_8bij-6mA/exec';
 
 export const POST: APIRoute = async ({ request }) => {
@@ -11,7 +10,6 @@ export const POST: APIRoute = async ({ request }) => {
     const data = await request.json();
     const { fp, clicks, gclid } = data;
 
-    // Normal user check (Agar gclid nahi hai, toh ignore karo)
     if (!gclid) {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
@@ -38,29 +36,27 @@ export const POST: APIRoute = async ({ request }) => {
     // 🔥 GOOGLE ADS BLOCKING LOGIC 🔥
     let isBlocked = false;
     
-    // Agar 2 ya usse zyada clicks ho gaye hain
     if (clicks >= 2 && ip !== 'unknown') {
       isBlocked = true;
 
-      // Vercel ke environment variables se details uthana
-      const customerId = process.env.GOOGLE_CUSTOMER_ID?.replace(/-/g, '') as string;
-      const loginCustomerId = process.env.GOOGLE_LOGIN_CUSTOMER_ID?.replace(/-/g, '') as string;
-
+      // Tere tokens direct add kiye hain
       const client = new GoogleAdsApi({
-        client_id: process.env.GOOGLE_CLIENT_ID as string,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
-        developer_token: process.env.GOOGLE_DEVELOPER_TOKEN as string,
+        client_id: '838248077339-f7frtcnlooc9ja9mckvc7m815cqia4e7.apps.googleusercontent.com',
+        client_secret: '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',
+        developer_token: 'n6QxLDwmz1mFMJnzYOd77w',
       });
 
+      // Dashes (-) automatic hat jayenge, sirf numbers rahenge
       const customer = client.Customer({
-        customer_id: customerId,
-        refresh_token: process.env.GOOGLE_REFRESH_TOKEN as string,
-        login_customer_id: loginCustomerId, 
+        customer_id: '9357094741', 
+        refresh_token: '1//04hOF9YKH2xXNCgYIARAAGAQSNwF-L9Irmzmd4a1ZRwSMmssBqC2j-QSOzsq924jbYNVQ0MzobInSO9CEubL_rQkLQpoLepgK98E',
+        login_customer_id: '5273808005', // MCC ID
       });
 
-      const campaignId = process.env.GOOGLE_CAMPAIGN_ID;
+      const campaignId = '21451236429';
 
       try {
+        // Check karein kitni IPs already block hain
         const query = `
           SELECT campaign_criterion.resource_name 
           FROM campaign_criterion 
@@ -69,6 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
         `;
         const existingCriteria = await customer.query(query);
 
+        // Agar 400+ IPs hain, toh purani 20 delete karein
         if (existingCriteria.length >= 400) {
           const criteriaToRemove = existingCriteria.slice(0, 20).map((c: any) => ({
             resource_name: c.campaign_criterion.resource_name, 
@@ -77,8 +74,9 @@ export const POST: APIRoute = async ({ request }) => {
           await customer.campaignCriteria.update(criteriaToRemove);
         }
 
+        // Nayi IP block karein
         await customer.campaignCriteria.create([{
-          campaign: `customers/${customerId}/campaigns/${campaignId}`,
+          campaign: `customers/9357094741/campaigns/${campaignId}`,
           negative: true, 
           ip_block: { ip_address: ip },
         }]);
@@ -86,9 +84,11 @@ export const POST: APIRoute = async ({ request }) => {
         console.log(`Successfully blocked IP: ${ip} in Google Ads.`);
 
       } catch (adError: any) {
+        // 👇 YAHAN MAINE DEBUG LOGIC ADD KIYA HAI
         console.error("========== GOOGLE ADS API ERROR ==========");
-        console.error("Error Message:", adError?.message || adError);
-        console.error("Error Details:", JSON.stringify(adError, null, 2));
+        // Google ka asli error object print karne ke liye
+        const errorDetails = adError?.errors || adError?.message || adError;
+        console.error("Full Error Details:", JSON.stringify(errorDetails, null, 2));
         console.error("==========================================");
       }
     }
