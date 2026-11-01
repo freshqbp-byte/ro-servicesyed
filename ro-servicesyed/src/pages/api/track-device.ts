@@ -11,15 +11,14 @@ const WEBHOOK = 'https://script.google.com/macros/s/AKfycbyFBUjNWku0RbHD28ySUnd6
 const CLIENT_ID = import.meta.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.GOOGLE_CLIENT_SECRET;
 const REFRESH_TOKEN = import.meta.env.GOOGLE_REFRESH_TOKEN;
-const CUSTOMER_ID = import.meta.env.GOOGLE_CUSTOMER_ID; // 9357094741
-const MCC_ID = '5273808005'; // Aapki MCC ID
+const CUSTOMER_ID = import.meta.env.GOOGLE_CUSTOMER_ID; 
+const MCC_ID = '5273808005'; // Aapki nayi MCC ID
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
     const { fp, clicks, gclid } = data;
 
-    // Agar normal user hai (GCLID nahi hai), toh kuch mat karo
     if (!gclid) {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
@@ -32,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     let isBlocked = false;
 
-    // 1. Google Sheet (Webhook) ko data bhejo aur check karo
+    // 1. Google Sheet (Webhook) ko data bhejo
     try {
       const res = await fetch(WEBHOOK, {
         method: 'POST',
@@ -50,7 +49,6 @@ export const POST: APIRoute = async ({ request }) => {
         console.error("Webhook JSON Error:", textResponse.substring(0, 100));
       }
 
-      // ✅ Agar Google Sheet bolti hai ki 2 clicks ho gaye hain (blocked: true)
       if (result.blocked === true) {
         isBlocked = true;
       }
@@ -61,6 +59,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 2. Google Ads API Call (Agar block karna hai)
     if (isBlocked && ip !== 'unknown') {
+      
+      // 🚨 CHECK: Kya yeh IPv4 address hai? (Google Ads API only supports IPv4)
+      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
+      
+      if (!isIPv4) {
+        console.log(`Skipped blocking IP: ${ip} because it is an IPv6 address (Google Ads only supports IPv4).`);
+        return new Response(JSON.stringify({ ok: true, blocked: false, note: "IPv6 skipped" }), { status: 200 });
+      }
+
       console.log("Block condition met. Calling API for IP:", ip);
 
       // OAuth Token Generate karein
@@ -85,12 +92,11 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (tokenData && tokenData.access_token) {
         try {
-          // ✅ API v26 use kar rahe hain, developer-token header nahi hai
           const adsResponse = await fetch(`https://googleads.googleapis.com/v26/customers/${CUSTOMER_ID}/customerNegativeCriteria:mutate`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${tokenData.access_token}`,
-              'login-customer-id': MCC_ID,
+              'login-customer-id': MCC_ID, // MCC ID
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
