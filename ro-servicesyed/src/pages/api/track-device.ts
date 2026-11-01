@@ -52,6 +52,8 @@ export const POST: APIRoute = async ({ request }) => {
       const customer = client.Customer({
         customer_id: process.env.GOOGLE_CUSTOMER_ID as string,
         refresh_token: process.env.GOOGLE_REFRESH_TOKEN as string,
+        // 👇 Yahan MCC Account ID add kar diya hai
+        login_customer_id: process.env.GOOGLE_LOGIN_CUSTOMER_ID as string, 
       });
 
       const campaignId = process.env.GOOGLE_CAMPAIGN_ID;
@@ -85,7 +87,7 @@ export const POST: APIRoute = async ({ request }) => {
         console.log(`Successfully blocked IP: ${ip} in Google Ads.`);
 
       } catch (adError: any) {
-        // 👇 YAHAN ASLI ERROR PRINT HOGA 👇
+        // Error aane par details print karein
         console.error("========== GOOGLE ADS API ERROR ==========");
         console.error("Error Message:", adError?.message || adError);
         console.error("Error Details:", JSON.stringify(adError, null, 2));
