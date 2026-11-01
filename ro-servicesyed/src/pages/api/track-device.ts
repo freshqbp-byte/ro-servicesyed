@@ -1,4 +1,4 @@
-export const prerender = false; // 👈 Ye line sabse upar add karein (Bahut Zaroori hai)
+export const prerender = false; 
 
 import type { APIRoute } from 'astro';
 
@@ -8,12 +8,21 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
 
+    // 👇 Agar gclid nahi hai (matlab normal user hai), toh API kuch na kare
+    if (!data.gclid) {
+      return new Response(JSON.stringify({ ok: true, message: "Normal user" }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // Real IP nikalne ka sahi tarika
     const ip = request.headers.get('cf-connecting-ip')?.trim()
             || request.headers.get('x-real-ip')?.trim()
             || request.headers.get('x-forwarded-for')?.split(',')[0].trim()
             || 'unknown';
 
+    // 👇 Data Google Sheet (Webhook) par bhejein
     await fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -24,6 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
         gclid: data.gclid,
         url: data.url,
         ua: data.ua,
+        action: data.action || 'Visit', // 👈 Action (Call/Visit) add kiya
         ts: Date.now()
       })
     });
