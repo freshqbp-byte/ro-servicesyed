@@ -42,7 +42,10 @@ export const POST: APIRoute = async ({ request }) => {
     if (clicks >= 2 && ip !== 'unknown') {
       isBlocked = true;
 
-      // Vercel Environment Variables se details uthana
+      // Vercel ke environment variables se details uthana
+      const customerId = process.env.GOOGLE_CUSTOMER_ID?.replace(/-/g, '') as string;
+      const loginCustomerId = process.env.GOOGLE_LOGIN_CUSTOMER_ID?.replace(/-/g, '') as string;
+
       const client = new GoogleAdsApi({
         client_id: process.env.GOOGLE_CLIENT_ID as string,
         client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -50,16 +53,14 @@ export const POST: APIRoute = async ({ request }) => {
       });
 
       const customer = client.Customer({
-        customer_id: process.env.GOOGLE_CUSTOMER_ID as string,
+        customer_id: customerId,
         refresh_token: process.env.GOOGLE_REFRESH_TOKEN as string,
-        // 👇 Yahan MCC Account ID add kar diya hai
-        login_customer_id: process.env.GOOGLE_LOGIN_CUSTOMER_ID as string, 
+        login_customer_id: loginCustomerId, 
       });
 
       const campaignId = process.env.GOOGLE_CAMPAIGN_ID;
 
       try {
-        // Check karein kitni IPs already block hain
         const query = `
           SELECT campaign_criterion.resource_name 
           FROM campaign_criterion 
@@ -68,7 +69,6 @@ export const POST: APIRoute = async ({ request }) => {
         `;
         const existingCriteria = await customer.query(query);
 
-        // Agar 400+ IPs hain, toh purani 20 delete karein (500 limit se bachne ke liye)
         if (existingCriteria.length >= 400) {
           const criteriaToRemove = existingCriteria.slice(0, 20).map((c: any) => ({
             resource_name: c.campaign_criterion.resource_name, 
@@ -77,9 +77,8 @@ export const POST: APIRoute = async ({ request }) => {
           await customer.campaignCriteria.update(criteriaToRemove);
         }
 
-        // Nayi IP block karein
         await customer.campaignCriteria.create([{
-          campaign: `customers/${process.env.GOOGLE_CUSTOMER_ID}/campaigns/${campaignId}`,
+          campaign: `customers/${customerId}/campaigns/${campaignId}`,
           negative: true, 
           ip_block: { ip_address: ip },
         }]);
@@ -87,7 +86,6 @@ export const POST: APIRoute = async ({ request }) => {
         console.log(`Successfully blocked IP: ${ip} in Google Ads.`);
 
       } catch (adError: any) {
-        // Error aane par details print karein
         console.error("========== GOOGLE ADS API ERROR ==========");
         console.error("Error Message:", adError?.message || adError);
         console.error("Error Details:", JSON.stringify(adError, null, 2));
