@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^11.0.15",
-    "astro": "^7.3.8"
+    "astro": "^7.3.8",
+    "google-ads-api": "^25.1.0"
   }
 }
