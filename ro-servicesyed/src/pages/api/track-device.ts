@@ -2,17 +2,13 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-// 👇 Yahan aapka naya Webhook URL daalein
 const WEBHOOK = 'https://script.google.com/macros/s/AKfycbyFBUjNWku0RbHD28ySUnd6A5GY7Rspmo4Dez_kF67MjxYd3gR0d2uLR_8bij-6mA/exec';
 
-// ==========================================
-// GOOGLE ADS API CREDENTIALS (Vercel se aayenge)
-// ==========================================
 const CLIENT_ID = import.meta.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.GOOGLE_CLIENT_SECRET;
 const REFRESH_TOKEN = import.meta.env.GOOGLE_REFRESH_TOKEN;
 const CUSTOMER_ID = import.meta.env.GOOGLE_CUSTOMER_ID; 
-const MCC_ID = '5273808005'; // Aapki nayi MCC ID
+const MCC_ID = '5273808005'; // Aapki MCC ID
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -23,7 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
 
-    // IP nikalna
+    // IP nikalna (Chahe IPv4 ho ya IPv6)
     const ip = request.headers.get('cf-connecting-ip')?.trim()
             || request.headers.get('x-real-ip')?.trim()
             || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -31,7 +27,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     let isBlocked = false;
 
-    // 1. Google Sheet (Webhook) ko data bhejo
     try {
       const res = await fetch(WEBHOOK, {
         method: 'POST',
@@ -57,20 +52,11 @@ export const POST: APIRoute = async ({ request }) => {
       console.error("Sheet Error:", sheetError);
     }
 
-    // 2. Google Ads API Call (Agar block karna hai)
     if (isBlocked && ip !== 'unknown') {
       
-      // 🚨 CHECK: Kya yeh IPv4 address hai? (Google Ads API only supports IPv4)
-      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
-      
-      if (!isIPv4) {
-        console.log(`Skipped blocking IP: ${ip} because it is an IPv6 address (Google Ads only supports IPv4).`);
-        return new Response(JSON.stringify({ ok: true, blocked: false, note: "IPv6 skipped" }), { status: 200 });
-      }
-
+      // Ab hum IPv4 aur IPv6 dono ko block karne ki koshish karenge
       console.log("Block condition met. Calling API for IP:", ip);
 
-      // OAuth Token Generate karein
       const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -96,7 +82,7 @@ export const POST: APIRoute = async ({ request }) => {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${tokenData.access_token}`,
-              'login-customer-id': MCC_ID, // MCC ID
+              'login-customer-id': MCC_ID,
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -108,7 +94,6 @@ export const POST: APIRoute = async ({ request }) => {
             const adsErrorText = await adsResponse.text();
             console.error("========== GOOGLE ADS API ERROR ==========");
             console.error(adsErrorText);
-            console.error("==========================================");
           } else {
             console.log("Success: IP blocked in Google Ads:", ip);
           }
@@ -134,6 +119,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 export const GET: APIRoute = async () => {
   return new Response(JSON.stringify({ status: "API is active" }), {
-    status: 200, headers: { 'Content-Type': 'application/json' }
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
   });
 };
