@@ -12,7 +12,7 @@ export default defineConfig({
   devToolbar: { 
     enabled: false 
   },
-  // 👇 YE NAYA SECTION ADD KAREIN (Isse google-ads-api ka error hat jayega) 👇
+  // 👇 Ye line build error ko fix karegi
   vite: {
     ssr: {
       noExternal: ['google-ads-api']
