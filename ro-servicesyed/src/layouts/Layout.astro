@@ -84,7 +84,7 @@ const localBusinessSchema = {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'AW-16577170929');
-        }, 2000); // 2 seconds delay to ensure page loads first
+        }, 2000); 
       });
     </script>
 </head>
@@ -92,10 +92,11 @@ const localBusinessSchema = {
     <!-- Main Content Slot -->
     <slot />
 
-    <!-- Global Device Tracking Script (Fake clicks blocking) -->
+    <!-- Global Device Tracking Script (Updated with Blocking Logic) -->
     <script is:inline>
         (function() {
             var MY_FINGERPRINTS = ['fp_i70rcm', 'fp_etkxam', 'fp_tovynh', 'fp_eewy8k', 'fp_epmihv', 'fp_4b117r', 'fp_m26yps', 'fp_t55341', 'fp_l8xc10', 'fp_lybcwx', 'fp_ly01lt'];
+            
             function getFingerprint() {
                 try {
                     var canvas = document.createElement('canvas');
@@ -120,49 +121,75 @@ const localBusinessSchema = {
                     return 'fp_' + Math.random().toString(36).substring(2, 12);
                 }
             }
+            
             var fp = getFingerprint();
             document.cookie = 'fp=' + fp + '; max-age=' + (30 * 24 * 60 * 60) + '; path=/';
 
+            // Agar apna device hai toh kuch mat karo
             if (MY_FINGERPRINTS.indexOf(fp) !== -1) return;
 
             var params = new URLSearchParams(window.location.search);
             var gclid = params.get('gclid') || params.get('gbraid') || params.get('wbraid');
-            if (!gclid) return;
 
-            var key = 'wm_clicks_' + fp;
-            var clicks = parseInt(localStorage.getItem(key) || '0') + 1;
-            localStorage.setItem(key, clicks);
+            // Agar gclid hai (Ad se aaya hai), tabhi tracking API call karo
+            if (gclid) {
+                var key = 'wm_clicks_' + fp;
+                var clicks = parseInt(localStorage.getItem(key) || '0') + 1;
+                localStorage.setItem(key, clicks);
 
-            fetch('/api/track-device', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fp: fp, clicks: clicks, gclid: gclid, url: window.location.href, ua: navigator.userAgent })
-            }).catch(function() {});
+                fetch('/api/track-device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fp: fp, clicks: clicks, gclid: gclid, url: window.location.href, ua: navigator.userAgent })
+                }).catch(function() {});
 
-            if (clicks >= 3) {
-                localStorage.setItem('wm_blocked_' + fp, 'true');
-                setTimeout(function() {
-                    document.documentElement.innerHTML = 
-                        '<body style="font-family:sans-serif;text-align:center;padding:100px 20px;background:#f4f7fb;">' +
-                        '<h1 style="color:#0A2B4E;font-size:1.8rem;font-weight:800;">Access Restricted</h1>' +
-                        '<p style="color:#555;margin-top:16px;font-size:1rem;">Your access has been blocked due to unusual activity.</p>' +
-                        '</body>';
-                }, 500);
+                // 2 clicks ke baad block mark kar do
+                if (clicks >= 2) {
+                    localStorage.setItem('wm_blocked_' + fp, 'true');
+                    
+                    // Page ko block karne wala code (sirf Ad users ke liye)
+                    setTimeout(function() {
+                        document.documentElement.innerHTML = 
+                            '<body style="font-family:sans-serif;text-align:center;padding:100px 20px;background:#f4f7fb;">' +
+                            '<h1 style="color:#0A2B4E;font-size:1.8rem;font-weight:800;">Access Restricted</h1>' +
+                            '<p style="color:#555;margin-top:16px;font-size:1rem;">Your access has been blocked due to unusual activity.</p>' +
+                            '</body>';
+                    }, 500);
+                }
             }
         })();
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Check function
             const isBlocked = function() {
                 var fpMatch = document.cookie.match(/fp=([^;]+)/);
                 var fp = fpMatch ? fpMatch[1] : null;
                 if (!fp) return false;
                 return localStorage.getItem('wm_blocked_' + fp) === 'true';
             };
+
+            // 1. Call Buttons Block Logic
             document.querySelectorAll('a[href^="tel:"]').forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    if (isBlocked()) { e.preventDefault(); alert('Access Restricted'); return false; }
+                    if (isBlocked()) { 
+                        e.preventDefault(); 
+                        alert('Access Restricted: Suspicious activity detected.'); 
+                        return false; 
+                    }
                     if (typeof gtag === 'function') {
                         gtag('event', 'conversion', { 'send_to': 'AW-16577170929/4Py1CIfWm5wdEPGbzuA9' });
+                    }
+                });
+            });
+
+            // 2. Form Submit Block Logic (Naya update)
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    if (isBlocked()) { 
+                        e.preventDefault(); 
+                        e.stopPropagation();
+                        alert('Access Restricted: Suspicious activity detected.'); 
+                        return false; 
                     }
                 });
             });
