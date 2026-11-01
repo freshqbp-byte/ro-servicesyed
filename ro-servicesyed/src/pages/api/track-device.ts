@@ -85,9 +85,11 @@ export const POST: APIRoute = async ({ request }) => {
         console.log(`Successfully blocked IP: ${ip} in Google Ads.`);
 
       } catch (adError: any) {
-        if (!adError.message?.includes('DUPLICATE')) {
-          console.error("Google Ads API Error:", adError.message);
-        }
+        // 👇 YAHAN ASLI ERROR PRINT HOGA 👇
+        console.error("========== GOOGLE ADS API ERROR ==========");
+        console.error("Error Message:", adError?.message || adError);
+        console.error("Error Details:", JSON.stringify(adError, null, 2));
+        console.error("==========================================");
       }
     }
 
@@ -97,6 +99,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   } catch (err) {
+    console.error("Server Error:", err);
     return new Response(JSON.stringify({ ok: false }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
