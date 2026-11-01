@@ -12,10 +12,12 @@ export default defineConfig({
   devToolbar: { 
     enabled: false 
   },
-  // 👇 Ye line build error ko fix karegi
+  // 👇 Ye line Vercel ko force karegi ki wo package ko build me include kare
   vite: {
-    ssr: {
-      noExternal: ['google-ads-api']
+    build: {
+      rollupOptions: {
+        external: ['google-ads-api']
+      }
     }
   }
 });
