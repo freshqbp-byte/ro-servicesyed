@@ -1,15 +1,25 @@
+import type { APIRoute } from 'astro';
+
 export const prerender = false;
 
-import type { APIRoute } from 'astro';
-import { GoogleAdsApi } from 'google-ads-api';
-
+// 👇 Yahan aapka naya Webhook URL daalein
 const WEBHOOK = 'https://script.google.com/macros/s/AKfycbyFBUjNWku0RbHD28ySUnd6A5GY7Rspmo4Dez_kF67MjxYd3gR0d2uLR_8bij-6mA/exec';
+
+// ==========================================
+// GOOGLE ADS API CREDENTIALS (Vercel se aayenge)
+// ==========================================
+const CLIENT_ID = import.meta.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.GOOGLE_CLIENT_SECRET;
+const REFRESH_TOKEN = import.meta.env.GOOGLE_REFRESH_TOKEN;
+const CUSTOMER_ID = import.meta.env.GOOGLE_CUSTOMER_ID; // 9357094741
+const MCC_ID = '5273808005'; // Aapki MCC ID
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
     const { fp, clicks, gclid } = data;
 
+    // Agar normal user hai (GCLID nahi hai), toh kuch mat karo
     if (!gclid) {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
@@ -17,79 +27,88 @@ export const POST: APIRoute = async ({ request }) => {
     // IP nikalna
     const ip = request.headers.get('cf-connecting-ip')?.trim()
             || request.headers.get('x-real-ip')?.trim()
-            || request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+            || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
             || 'unknown';
 
-    // Google Sheet me log karna
+    let isBlocked = false;
+
+    // 1. Google Sheet (Webhook) ko data bhejo aur check karo
     try {
-      await fetch(WEBHOOK, {
+      const res = await fetch(WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ip: ip, fp: fp, clicks: clicks, gclid: gclid, url: data.url, ua: data.ua, ts: Date.now()
         })
       });
+      
+      const textResponse = await res.text();
+      let result = { blocked: false };
+      try {
+        result = JSON.parse(textResponse);
+      } catch (e) {
+        console.error("Webhook JSON Error:", textResponse.substring(0, 100));
+      }
+
+      // ✅ Agar Google Sheet bolti hai ki 2 clicks ho gaye hain (blocked: true)
+      if (result.blocked === true) {
+        isBlocked = true;
+      }
+
     } catch (sheetError) {
       console.error("Sheet Error:", sheetError);
     }
 
-    // 🔥 GOOGLE ADS BLOCKING LOGIC 🔥
-    let isBlocked = false;
-    
-    if (clicks >= 2 && ip !== 'unknown') {
-      isBlocked = true;
+    // 2. Google Ads API Call (Agar block karna hai)
+    if (isBlocked && ip !== 'unknown') {
+      console.log("Block condition met. Calling API for IP:", ip);
 
-      // Tere tokens direct add kiye hain
-      const client = new GoogleAdsApi({
-        client_id: '838248077339-f7frtcnlooc9ja9mckvc7m815cqia4e7.apps.googleusercontent.com',
-        client_secret: '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',
-        developer_token: 'n6QxLDwmz1mFMJnzYOd77w',
+      // OAuth Token Generate karein
+      const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          refresh_token: REFRESH_TOKEN,
+          grant_type: 'refresh_token',
+        }),
       });
 
-      // Dashes (-) automatic hat jayenge, sirf numbers rahenge
-      const customer = client.Customer({
-        customer_id: '9357094741', 
-        refresh_token: '1//04hOF9YKH2xXNCgYIARAAGAQSNwF-L9Irmzmd4a1ZRwSMmssBqC2j-QSOzsq924jbYNVQ0MzobInSO9CEubL_rQkLQpoLepgK98E',
-        login_customer_id: '5273808005', // MCC ID
-      });
-
-      const campaignId = '21451236429';
-
+      const tokenText = await tokenResponse.text();
+      let tokenData;
       try {
-        // Check karein kitni IPs already block hain
-        const query = `
-          SELECT campaign_criterion.resource_name 
-          FROM campaign_criterion 
-          WHERE campaign_criterion.type = 'IP_BLOCK' 
-          AND campaign.id = ${campaignId}
-        `;
-        const existingCriteria = await customer.query(query);
+        tokenData = JSON.parse(tokenText);
+      } catch (e) {
+        console.error("OAuth Error:", tokenText.substring(0, 200));
+      }
 
-        // Agar 400+ IPs hain, toh purani 20 delete karein
-        if (existingCriteria.length >= 400) {
-          const criteriaToRemove = existingCriteria.slice(0, 20).map((c: any) => ({
-            resource_name: c.campaign_criterion.resource_name, 
-            status: 'REMOVED'
-          }));
-          await customer.campaignCriteria.update(criteriaToRemove);
+      if (tokenData && tokenData.access_token) {
+        try {
+          // ✅ API v26 use kar rahe hain, developer-token header nahi hai
+          const adsResponse = await fetch(`https://googleads.googleapis.com/v26/customers/${CUSTOMER_ID}/customerNegativeCriteria:mutate`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${tokenData.access_token}`,
+              'login-customer-id': MCC_ID,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              operations: [{ create: { ipBlock: { ipAddress: ip } } }]
+            })
+          });
+
+          if (!adsResponse.ok) {
+            const adsErrorText = await adsResponse.text();
+            console.error("========== GOOGLE ADS API ERROR ==========");
+            console.error(adsErrorText);
+            console.error("==========================================");
+          } else {
+            console.log("Success: IP blocked in Google Ads:", ip);
+          }
+        } catch (adError) {
+          console.error("Fetch Error:", adError);
         }
-
-        // Nayi IP block karein
-        await customer.campaignCriteria.create([{
-          campaign: `customers/9357094741/campaigns/${campaignId}`,
-          negative: true, 
-          ip_block: { ip_address: ip },
-        }]);
-        
-        console.log(`Successfully blocked IP: ${ip} in Google Ads.`);
-
-      } catch (adError: any) {
-        // 👇 YAHAN MAINE DEBUG LOGIC ADD KIYA HAI
-        console.error("========== GOOGLE ADS API ERROR ==========");
-        // Google ka asli error object print karne ke liye
-        const errorDetails = adError?.errors || adError?.message || adError;
-        console.error("Full Error Details:", JSON.stringify(errorDetails, null, 2));
-        console.error("==========================================");
       }
     }
 
@@ -105,4 +124,10 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+};
+
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ status: "API is active" }), {
+    status: 200, headers: { 'Content-Type': 'application/json' }
+  });
 };
