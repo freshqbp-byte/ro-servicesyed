@@ -25,6 +25,15 @@ export const POST: APIRoute = async ({ request }) => {
             || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
             || 'unknown';
 
+    // 👇 GOOGLEBOT IGNORE LOGIC (Yeh naya add kiya hai)
+    // Googlebot ke IPs ko ignore karo taaki spam count na ho
+    const isGoogleBot = ip.startsWith('64.233.') || ip.startsWith('66.249.') || ip.startsWith('72.14.');
+    if (isGoogleBot) {
+      console.log("Googlebot detected, ignoring for tracking:", ip);
+      return new Response(JSON.stringify({ ok: true, message: "Bot ignored" }), { status: 200 });
+    }
+    // 👆 GOOGLEBOT LOGIC END
+
     let isBlocked = false;
 
     try {
