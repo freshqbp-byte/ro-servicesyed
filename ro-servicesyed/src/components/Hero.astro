@@ -9,7 +9,10 @@ const PHONE_LINK = "tel:+919008315606";
       Expert repair, installation, and AMC plans for all major brands. Certified technicians, genuine parts, and a 30-day warranty.
     </p>
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href={PHONE_LINK} class="btn btn-primary">Call Now</a>
+      
+      <!-- ✅ Call Now button par tracking code add kar diya hai -->
+      <a href={PHONE_LINK} onclick="if(typeof gtag === 'function'){ gtag('event', 'conversion', {'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9'}); }" class="btn btn-primary">Call Now</a>
+      
       <a href="#services" class="btn btn-light">Learn More</a>
     </div>
     <div style="margin-top:60px;display:flex;gap:48px;justify-content:center;flex-wrap:wrap;color:var(--gray);font-size:0.95rem;">
