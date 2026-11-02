@@ -9,9 +9,12 @@ const PHONE_LINK = "tel:+919008315606";
     <div style="display:flex;gap:24px;align-items:center;">
       <a href="#services" style="text-decoration:none;color:var(--text);font-size:0.9rem;font-weight:500;">Services</a>
       <a href="#pricing" style="text-decoration:none;color:var(--text);font-size:0.9rem;font-weight:500;">Pricing</a>
-      <a href={PHONE_LINK} class="btn btn-primary" style="padding:10px 20px;font-size:0.9rem;">
+      
+      <!-- ✅ Contact button par tracking code add kar diya hai -->
+      <a href={PHONE_LINK} onclick="if(typeof gtag === 'function'){ gtag('event', 'conversion', {'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9'}); }" class="btn btn-primary" style="padding:10px 20px;font-size:0.9rem;">
         Contact
       </a>
+
     </div>
   </div>
 </header>
