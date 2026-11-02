@@ -32,7 +32,10 @@ import BrandHeader from '../components/BrandHeader.astro';
 
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <a href="tel:+919008315606" class="btn-call-now">
+        <!-- 👇 Yahan Call Tracking ka onclick add kar diya hai -->
+        <a href="tel:+919008315606" 
+           onclick="if(typeof gtag === 'function'){ gtag('event', 'conversion', {'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9'}); }" 
+           class="btn-call-now">
           📞 Call Now
         </a>
         <a href="/" id="homeBtn" class="btn-home">
@@ -43,10 +46,9 @@ import BrandHeader from '../components/BrandHeader.astro';
     </div>
   </section>
 
-  <!-- ✅ NAYA: Form Submit Conversion Tracking Code -->
+  <!-- ✅ Form Submit Conversion Tracking Code -->
   <script is:inline>
     window.addEventListener('load', function() {
-      // Thoda delay taaki page load ho jaye aur speed par asar na pade
       setTimeout(function() {
         if (typeof gtag === 'function') {
           gtag('event', 'conversion', {
@@ -74,15 +76,15 @@ import BrandHeader from '../components/BrandHeader.astro';
       const brand = urlParams.get('brand');
       
       const homeBtn = document.getElementById('homeBtn');
-      const brandTitleEl = document.querySelector('.brand-title'); // Header text
-      const iconBoxEl = document.querySelector('.icon-box'); // Header icon color
+      const brandTitleEl = document.querySelector('.brand-title');
+      const iconBoxEl = document.querySelector('.icon-box');
 
       // Default Values
       let brandName = "Aquaguard";
       let brandColor = "#0072CE";
       let link = "/aquaguard-service";
 
-      // 👇 Sabhi Brands ka Logic yahan add kar diya hai 👇
+      // Brand Logic
       if (brand === 'Kent') {
         brandName = "Kent"; brandColor = "#0b5ed7"; link = "/kent-service";
       } else if (brand === 'Aquaguard') {
@@ -105,7 +107,6 @@ import BrandHeader from '../components/BrandHeader.astro';
         brandName = "Hindware"; brandColor = "#e31837"; link = "/hindware-service";
       }
 
-      // Update Header Text & Color dynamically
       if (brandTitleEl) {
         brandTitleEl.innerText = `RO ${brandName} Water Purifier`;
         brandTitleEl.style.color = brandColor;
@@ -115,7 +116,6 @@ import BrandHeader from '../components/BrandHeader.astro';
         iconBoxEl.style.backgroundColor = `${brandColor}15`;
       }
 
-      // Update Button Text & Link dynamically
       if (brand) {
         homeBtn.innerText = `← ${brandName} Home`;
         homeBtn.href = link;
@@ -194,7 +194,7 @@ import BrandHeader from '../components/BrandHeader.astro';
 
   .booking-box h2 {
     margin: 5px 0 0 0;
-    color: #0072CE; /* Default blue */
+    color: #0072CE;
     font-size: 1.8rem;
     font-weight: 800;
     letter-spacing: 2px;
