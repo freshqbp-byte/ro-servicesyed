@@ -18,9 +18,12 @@ const { brandName = "RO Service" } = Astro.props;
     <!-- Contact Us -->
     <div class="footer-section">
       <h4>Contact Us</h4>
-      <a href="tel:+919008315606" class="contact-link">
+      
+      <!-- ✅ Phone link with Conversion Tracking -->
+      <a href="tel:+919008315606" onclick="if(typeof gtag === 'function'){ gtag('event', 'conversion', {'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9'}); }" class="contact-link">
         <span>📞</span> +91 9008315606
       </a>
+
       <a href="mailto:info@roservicesupport.co.in" class="contact-link">
         <span>✉️</span> info@roservicesupport.co.in
       </a>
@@ -48,7 +51,6 @@ const { brandName = "RO Service" } = Astro.props;
       <a href="/about">About Us</a>
       <span class="dot">·</span>
       
-      <!-- 👇 BLOG LINK ADDED HERE 👇 -->
       <a href="/blog">Blog</a>
       <span class="dot">·</span>
       
