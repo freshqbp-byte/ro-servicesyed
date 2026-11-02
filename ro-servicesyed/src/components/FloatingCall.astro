@@ -3,12 +3,17 @@ const PHONE_LINK = "tel:+919008315606";
 const WA_LINK = "https://wa.me/919008315606";
 ---
 <div style="position:fixed;bottom:0;left:0;right:0;display:flex;z-index:200;box-shadow:0 -2px 10px rgba(0,0,0,0.1);">
-  <a href={PHONE_LINK} style="flex:1;background:#16a34a;color:#fff;text-align:center;padding:16px;font-weight:700;text-decoration:none;">
+  
+  <!-- ✅ Call Now button par tracking code add kar diya hai -->
+  <a href={PHONE_LINK} onclick="if(typeof gtag === 'function'){ gtag('event', 'conversion', {'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9'}); }" style="flex:1;background:#16a34a;color:#fff;text-align:center;padding:16px;font-weight:700;text-decoration:none;">
     📞 Call Now
   </a>
+
+  <!-- WhatsApp button (isme tracking nahi lagayi hai, kyunki yeh conversion nahi hai) -->
   <a href={WA_LINK} style="flex:1;background:#25D366;color:#fff;text-align:center;padding:16px;font-weight:700;text-decoration:none;">
     💬 WhatsApp
   </a>
+
 </div>
 <!-- Body ke bottom pe space, taaki footer chhupe na -->
 <div style="height:64px;"></div>
