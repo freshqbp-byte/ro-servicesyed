@@ -71,21 +71,34 @@ const localBusinessSchema = {
         .container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 16px; }
     </style>
 
-    <!-- Google Tag Manager (Lazy Loaded for Speed) -->
+    <!-- ⭐ GOOGLE TAG (LAZY LOAD FOR SPEED) - FIXED -->
     <script is:inline>
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          var script = document.createElement('script');
-          script.src = "https://www.googletagmanager.com/gtag/js?id=AW-16577170929";
-          script.async = true;
-          document.head.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      // 👇 gtag function ko bahar nikaal diya taaki Thank You page isko pehchan sake
+      function gtag(){dataLayer.push(arguments);}
+      
+      function loadGTM() {
+        if (window.__gtmLoaded) return;
+        window.__gtmLoaded = true;
 
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-16577170929';
+        document.head.appendChild(script);
+
+        script.onload = function() {
           gtag('js', new Date());
           gtag('config', 'AW-16577170929');
-        }, 2000); 
+        };
+      }
+
+      // Pehli interaction (scroll/click) par GTM load karo
+      ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function(event) {
+        window.addEventListener(event, loadGTM, { once: true, passive: true });
       });
+      
+      // Fallback: 3.5 second baad automatic load
+      setTimeout(loadGTM, 3500);
     </script>
 </head>
 <body>
@@ -177,13 +190,13 @@ const localBusinessSchema = {
                         return false; 
                     }
                     if (typeof gtag === 'function') {
-                        // ✅ Yahan Call ka naya label update kar diya gaya hai
+                        // ✅ Call ka naya label update
                         gtag('event', 'conversion', { 'send_to': 'AW-16577170929/fx88CNfXpLAdEPGbzuA9' });
                     }
                 });
             });
 
-            // 2. Form Submit Block Logic (Naya update)
+            // 2. Form Submit Block Logic
             document.querySelectorAll('form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     if (isBlocked()) { 
