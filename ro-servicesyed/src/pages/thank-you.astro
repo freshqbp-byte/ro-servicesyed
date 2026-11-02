@@ -43,6 +43,21 @@ import BrandHeader from '../components/BrandHeader.astro';
     </div>
   </section>
 
+  <!-- ✅ NAYA: Form Submit Conversion Tracking Code -->
+  <script is:inline>
+    window.addEventListener('load', function() {
+      // Thoda delay taaki page load ho jaye aur speed par asar na pade
+      setTimeout(function() {
+        if (typeof gtag === 'function') {
+          gtag('event', 'conversion', {
+              'send_to': 'AW-16577170929/wQKjCI2pn7AdEPGbzuA9' // Form wala Label
+          });
+          console.log('Form Submit Conversion Fired!');
+        }
+      }, 500);
+    });
+  </script>
+
   <!-- Dynamic Script for Header & Button -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
