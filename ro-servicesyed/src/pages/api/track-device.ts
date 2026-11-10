@@ -8,7 +8,7 @@ const CLIENT_ID = import.meta.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.GOOGLE_CLIENT_SECRET;
 const REFRESH_TOKEN = import.meta.env.GOOGLE_REFRESH_TOKEN;
 const CUSTOMER_ID = import.meta.env.GOOGLE_CUSTOMER_ID; 
-const MCC_ID = '5273808005'; // Aapki MCC ID
+const MCC_ID = '5273808005';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -19,13 +19,11 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
 
-    // IP nikalna
     const ip = request.headers.get('cf-connecting-ip')?.trim()
             || request.headers.get('x-real-ip')?.trim()
             || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
             || 'unknown';
 
-    // 👇 GOOGLEBOT IGNORE LOGIC
     const isGoogleBot = ip.startsWith('64.233.') || ip.startsWith('66.249.') || ip.startsWith('72.14.');
     if (isGoogleBot) {
       console.log("Googlebot detected, ignoring for tracking:", ip);
@@ -61,7 +59,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isBlocked && ip !== 'unknown') {
       
-      // Humne yahan se IPv6 skip wala check hata diya hai
       console.log("Block condition met. Calling API for IP:", ip);
 
       const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -80,10 +77,15 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         tokenData = JSON.parse(tokenText);
       } catch (e) {
-        console.error("OAuth Error:", tokenText.substring(0, 200));
+        console.error("OAuth JSON Parse Error:", tokenText.substring(0, 200));
       }
 
-      if (tokenData && tokenData.access_token) {
+      // 👇 DEBUG LOG: Check karein ki token aaya ya error
+      if (!tokenData || !tokenData.access_token) {
+        console.error("🚨 OAuth Token Fail! Google ka response:", tokenData);
+      } else {
+        console.log("✅ OAuth Token successfully generated!");
+        
         try {
           const adsResponse = await fetch(`https://googleads.googleapis.com/v26/customers/${CUSTOMER_ID}/customerNegativeCriteria:mutate`, {
             method: 'POST',
@@ -100,7 +102,8 @@ export const POST: APIRoute = async ({ request }) => {
           if (!adsResponse.ok) {
             const adsErrorText = await adsResponse.text();
             console.error("========== GOOGLE ADS API ERROR ==========");
-            console.error(adsErrorText);
+            console.error("Status Code:", adsResponse.status);
+            console.error("Error Detail:", adsErrorText);
           } else {
             console.log("Success: IP blocked in Google Ads:", ip);
           }
