@@ -19,20 +19,18 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: true, message: "Normal user ignored" }), { status: 200 });
     }
 
-    // IP nikalna (IPv4 ya IPv6)
+    // IP nikalna
     const ip = request.headers.get('cf-connecting-ip')?.trim()
             || request.headers.get('x-real-ip')?.trim()
             || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
             || 'unknown';
 
-    // 👇 GOOGLEBOT IGNORE LOGIC (Yeh naya add kiya hai)
-    // Googlebot ke IPs ko ignore karo taaki spam count na ho
+    // 👇 GOOGLEBOT IGNORE LOGIC
     const isGoogleBot = ip.startsWith('64.233.') || ip.startsWith('66.249.') || ip.startsWith('72.14.');
     if (isGoogleBot) {
       console.log("Googlebot detected, ignoring for tracking:", ip);
       return new Response(JSON.stringify({ ok: true, message: "Bot ignored" }), { status: 200 });
     }
-    // 👆 GOOGLEBOT LOGIC END
 
     let isBlocked = false;
 
@@ -63,6 +61,18 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isBlocked && ip !== 'unknown') {
       
+      // 🚨 NAYA CHECK: Kya yeh IPv4 hai?
+      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
+      
+      if (!isIPv4) {
+        console.log(`Skipped Google Ads API: IP ${ip} is IPv6 (Only IPv4 block is supported).`);
+        // Agar IPv6 hai, toh block process yahin rok do
+        return new Response(JSON.stringify({ ok: true, blocked: true, note: "IPv6 skipped for Ads" }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
       console.log("Block condition met. Calling API for IP:", ip);
 
       const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -86,7 +96,6 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (tokenData && tokenData.access_token) {
         try {
-          // ✅ login-customer-id header mein MCC ID pass ki ja rahi hai
           const adsResponse = await fetch(`https://googleads.googleapis.com/v26/customers/${CUSTOMER_ID}/customerNegativeCriteria:mutate`, {
             method: 'POST',
             headers: {
