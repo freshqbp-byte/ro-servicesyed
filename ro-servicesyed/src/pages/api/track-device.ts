@@ -61,18 +61,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isBlocked && ip !== 'unknown') {
       
-      // 🚨 NAYA CHECK: Kya yeh IPv4 hai?
-      const isIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
-      
-      if (!isIPv4) {
-        console.log(`Skipped Google Ads API: IP ${ip} is IPv6 (Only IPv4 block is supported).`);
-        // Agar IPv6 hai, toh block process yahin rok do
-        return new Response(JSON.stringify({ ok: true, blocked: true, note: "IPv6 skipped for Ads" }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-
+      // Humne yahan se IPv6 skip wala check hata diya hai
       console.log("Block condition met. Calling API for IP:", ip);
 
       const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
